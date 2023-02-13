@@ -1,0 +1,16 @@
+;Sort a list with keeping double values in resulted list. E.g.: [4 2 6 2 3 4] --> [2 2 3 4 4 6]
+
+myMin([M],M).
+myMin([H|T],H):- myMin(T,R),
+                  H < R,!.
+myMin([_|T],R):- myMin(T,R).
+
+remFirstOcc([],_,[]).
+remFirstOcc([H|T],H,T).
+remFirstOcc([H|T],E,[H|R]):- H =\= E,
+                             remFirstOcc(T,E,R).
+
+mySort([],[]).
+mySort(L,[M|R]):- myMin(L,M),
+                  remFirstOcc(L,M,RL),
+                  mySort(RL,R).

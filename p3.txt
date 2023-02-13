@@ -1,0 +1,18 @@
+;For a list of integer numbers, define a predicate to write twice in list every prime number.
+
+isPrime(2,_):-!.
+isPrime(3,_):-!.
+isPrime(N,D):- N =\= 1,
+               N mod D =\= 0,
+               D >= N/2, !.
+isPrime(N,D):- N =\= 1,
+               N mod D =\= 0,
+               NewD is D + 1,
+               isPrime(N,NewD).
+
+isPrimeMain(N):- isPrime(N,2).
+
+doublePrime([],[]).
+doublePrime([H|T],[H,H|R]):- isPrimeMain(H),!,
+                             doublePrime(T,R).
+doublePrime([H|T],[H|R]):- doublePrime(T,R).

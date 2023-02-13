@@ -1,0 +1,27 @@
+;For a heterogeneous list, formed from integer 
+;numbers and list of numbers, define a predicate to write in every sublist twice every prime number.
+;Eg.: [1, [2, 3], 4, 5, [1, 4, 6], 3, [1, 3, 7, 9, 10], 5] =>[1, [2, 2, 3, 3], 4, 5, [1, 4, 6], 3, [1, 3, 3, 7, 7, 9, 10], 5]
+
+isPrime(2,_):-!.
+isPrime(3,_):-!.
+isPrime(N,D):- N =\= 1,
+               N mod D =\= 0,
+               D >= N/2, !.
+isPrime(N,D):- N =\= 1,
+               N mod D =\= 0,
+               NewD is D + 1,
+               isPrime(N,NewD).
+
+isPrimeMain(N):- isPrime(N,2).
+
+doublePrime([],[]).
+doublePrime([H|T],[H,H|R]):- isPrimeMain(H),!,
+                             doublePrime(T,R).
+doublePrime([H|T],[H|R]):- doublePrime(T,R).
+
+dPList([],[]).
+dPList([H|T],[H|R]):- atomic(H),
+                      dPList(T,R).
+dPList([H|T],[HR|R]):- is_list(H),
+                       doublePrime(H,HR),
+                       dPList(T,R).

@@ -1,0 +1,20 @@
+;Write a predicate to test equality of two sets without using the set difference.
+
+myLength([],0).
+myLength([_|T],R1):-
+    myLength(T,R),
+    R1 is R + 1.
+
+remOcc([],_,[]).
+remOcc([H|T],E,[H|R]):- H =\= E,!,
+                        remOcc(T,E,R).
+remOcc([_|T],E,R):- remOcc(T,E,R).
+
+check([],[]).
+check([H|T],P):- remOcc(P,H,PR),
+                 myLength([H|T], FirstLength), myLength(P,SecondLength),
+                 FirstLength =:= SecondLength,
+                 check(T,PR).
+
+
+
